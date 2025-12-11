@@ -53,6 +53,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         EXTRACTUS ANALYTICS  
@@ -67,6 +68,7 @@
         <div id="resultado"></div>
     </div>
 
+    <!-- SCRIPT COMEÇA AQUI (CORRETO) -->
     <script>
         async function validar() {
             const codigo = document.getElementById("codigo").value.trim();
@@ -80,15 +82,18 @@
 
             try {
                 const resp = await fetch("certificados.json");
-                const lista = await resp.json();
+                const data = await resp.json();
+                const lista = data.certificados;
 
-                if (lista[codigo]) {
+                const cert = lista.find(item => item.codigo === codigo);
+
+                if (cert) {
                     resultado.innerHTML = `
                         Certificado Válido<br><br>
-                        <strong>Aluno:</strong> ${lista[codigo].nome}<br>
-                        <strong>Curso:</strong> ${lista[codigo].curso}<br>
-                        <strong>Carga Horária:</strong> ${lista[codigo].carga}<br>
-                        <strong>Data:</strong> ${lista[codigo].data}
+                        <strong>Aluno:</strong> ${cert.nome}<br>
+                        <strong>Curso:</strong> ${cert.curso}<br>
+                        <strong>Carga Horária:</strong> ${cert.carga_horaria}<br>
+                        <strong>Data de Emissão:</strong> ${cert.emissao}
                     `;
                     resultado.style.color = "green";
                 } else {
@@ -101,6 +106,7 @@
             }
         }
     </script>
-
+    <!-- SCRIPT TERMINA AQUI -->
 </body>
 </html>
+
