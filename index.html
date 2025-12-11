@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extractus Analytics - Validação de Certificados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #1e1e1e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+        }
+        button {
+            width: 100%;
+            margin-top: 15px;
+            padding: 14px;
+            background: #1e1e1e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        #resultado {
+            margin-top: 25px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        EXTRACTUS ANALYTICS  
+        <br> Validação de Certificados
+    </header>
+
+    <div class="container">
+        <h2>Informe o código do certificado</h2>
+        <input type="text" id="codigo" placeholder="Ex.: EA-2025-0001">
+        <button onclick="validar()">Validar Certificado</button>
+
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        async function validar() {
+            const codigo = document.getElementById("codigo").value.trim();
+            const resultado = document.getElementById("resultado");
+
+            if (codigo === "") {
+                resultado.innerHTML = "Por favor, insira um código.";
+                resultado.style.color = "red";
+                return;
+            }
+
+            try {
+                const resp = await fetch("certificados.json");
+                const lista = await resp.json();
+
+                if (lista[codigo]) {
+                    resultado.innerHTML = `
+                        Certificado Válido<br><br>
+                        <strong>Aluno:</strong> ${lista[codigo].nome}<br>
+                        <strong>Curso:</strong> ${lista[codigo].curso}<br>
+                        <strong>Carga Horária:</strong> ${lista[codigo].carga}<br>
+                        <strong>Data:</strong> ${lista[codigo].data}
+                    `;
+                    resultado.style.color = "green";
+                } else {
+                    resultado.innerHTML = "Certificado não encontrado.";
+                    resultado.style.color = "red";
+                }
+            } catch (error) {
+                resultado.innerHTML = "Erro ao carregar banco de certificados.";
+                resultado.style.color = "red";
+            }
+        }
+    </script>
+
+</body>
+</html>
