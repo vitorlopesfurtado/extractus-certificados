@@ -1,0 +1,11 @@
+{
+  "certificados": [
+    {
+      "codigo": "EXA-00001",
+      "nome": "Aluno Exemplo",
+      "curso": "Assistente de Estoque",
+      "carga_horaria": "20h",
+      "emissao": "2025-01-01"
+    }
+  ]
+}
